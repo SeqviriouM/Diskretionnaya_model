@@ -52,8 +52,6 @@ app.get('/sign',function(req, res, next) {
 app.post('/sign',function(req, res, next) {
 	
 	var result = "";
-	var inform = [[],[],[],[],[],[],[],[]];
-	var k=0;
 	user_name = req.body['login'];
 
 	if (users[user_name]) {
@@ -64,18 +62,10 @@ app.post('/sign',function(req, res, next) {
 
 		if (user_name == "User1") {
 
-
-			for (var i in users) {
-				for (var j in users[i]) {
-					inform[k].push(users[i][j]);
-				}
-				k++;
-			}
-
 			res.render("user", {
 			title: user_name, // имя пользователя в ситсеме(слева сверху)
 			objects: result, // Вывод доступных пользователю объектов
-			administrate: '<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Администрирование</button>', // Администрирование пользователей(назначение новых прав пользователям)
+			administrate: '<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#administrate">Администрирование</button>', // Администрирование пользователей(назначение новых прав пользователям)
 			users: users,
 			user_name: user_name	
 		});
@@ -84,7 +74,7 @@ app.post('/sign',function(req, res, next) {
 			res.render("user", {
 			title: user_name, // имя пользователя в ситсеме(слева сверху)
 			objects: result, // Вывод доступных пользователю объектов
-			administrate: '<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Администрирование</button>', // Администрирование пользователей(назначение новых прав пользователям)
+			administrate: '<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#administrate">Администрирование</button>', // Администрирование пользователей(назначение новых прав пользователям)
 			users: users,
 			user_name: user_name
 		});
@@ -101,16 +91,20 @@ app.post('/changeproperty',function(req, res, next) {
 	var write = false;
 	var change = false;
 	var result = ""; // Содержит новые права доступа
-	var name = req.body['login']; // Имя пользователя, для которого меняются права доступа
-	var obj = req.body['object'];
-
-	console.log(user_name);
-
+	var name = req.body['login']; // Имя пользователя для которого меняются права доступа
+	var obj = req.body['object']; // Имя объекта для которого меняются права доступа
+ 
 	if (req.body['read']) {read = true;};
 	if (req.body['write']) {write = true;};
 	if (req.body['change']) {change = true;};
-	
-	if (users[name]) {
+
+	if (name == "User1") {
+
+		res.render("res", {
+			color: "background-color:red",
+			answer: "Вы не имеете полномочий изменять права админестратора"
+		})
+	} else if (users[name]) {
 		if ((users[user_name][obj].indexOf("Полный доступ") != -1) || (users[user_name][obj].indexOf("Передача прав") != -1)) {
 			if (read) result+="Чтение ";
 			if (write) result+="Запись ";
@@ -134,6 +128,45 @@ app.post('/changeproperty',function(req, res, next) {
 		});
 	}
 })
+
+
+app.post('/actions',function(req, res, next) {
+
+	var result = ""; // Содержит новые права доступа
+	var obj = req.body['object']; //Имя объекта над которым необходимо выполнить действия 
+	var action = req.body['options'];
+	var allow_action;
+
+	// Назначение выбранного действия
+	switch(action) {
+		case "read":
+			action = "Чтение";
+			break;
+		case "write":
+			action = "Запись"
+
+	}
+
+	if (users[user_name][obj].indexOf(action) != -1) {
+		allow_action = true;
+	} else {
+		allow_action = false;
+	}
+
+	if (allow_action) {
+		res.render("res", {
+			color: "background-color:green",
+			answer: "Вы успешно выполнили действие"
+		})
+	} else {
+		res.render("res", {
+			color: "background-color:red",
+			answer: "Вы не имеет прав доступа на выбранное действие"
+		})
+	}
+	
+})
+
 
 app.use(express.static(path.join(__dirname, 'public')));
 

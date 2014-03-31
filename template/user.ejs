@@ -50,6 +50,12 @@
         <%- administrate %>
       </div>
 
+      <br><br>
+
+      <div>   <!-- Выполнение пользователями действий -->
+        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#actions">Действия</button>
+      </div>
+
 
       <br><br>
 
@@ -63,14 +69,14 @@
       <br><br>
 
       <!-- Кнопка назад -->
-      <a href="/"><button type="button" class="btn-danger btn-lg">Back</button></a>
+      <a href="/"><button type="button" class="btn-danger btn-lg">Exit</button></a>
 
     </div>
       
 
 
         <!--Модуль для передачи прав-->
-      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal fade" id="administrate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -131,6 +137,70 @@
       </div>
     </div><!-- Модуль -->
 
+
+
+      <!--Модуль для выполнения действий-->
+      <div class="modal fade" id="actions" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="myModalLabel">Выберите желаемые действия</h4>
+            </div>
+            
+            <div class="modal-body">
+              
+              <form class="form-horizontal" role="form" method="post" action="/actions">
+                
+
+                <div class="form-group">
+                  <label for="object" class="col-sm-3 control-label">Выберите объект</label>
+                  <div class="col-sm-9">
+                    <select class="form-control" id="object" name="object">
+                    <option>Object1</option>
+                    <option>Object2</option>
+                    <option>Object3</option>
+                    <option>Object4</option>
+                    <option>Object5</option>
+                  </select>
+                  </div>
+                </div>
+
+                  <div class="form-group">
+                    <label for="chooseAction" class="col-sm-3 control-label">Выберите действие</label>
+                    <div class="col-sm-9">
+                      
+                      <div class="radio">
+                        <label>
+                          <input type="radio" name="options" id="read" value="read">
+                          Чтение
+                        </label>
+                      </div>
+                      <div class="radio">
+                        <label>
+                          <input type="radio" name="options" id="write" value="write">
+                          Запись
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Continue</button>
+            </div>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div><!-- Модуль -->
+
+
+
       <!--Модуль для просмотра пользователей-->
       <div class="modal fade" id="showUsers" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -175,7 +245,6 @@
 
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Save changes</button>
             </div>
 
             </form>
